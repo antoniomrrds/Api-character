@@ -1,7 +1,7 @@
 const { DataTypes } = require('sequelize');
 const connection = require('../database/database');
 
-const Character = connection.define('character', {
+const Phrase = connection.define('phrase', {
   id: {
     type: DataTypes.INTEGER,
     autoIncrement: true,
@@ -11,20 +11,12 @@ const Character = connection.define('character', {
     type: DataTypes.STRING,
     allowNull: false,
   },
-  about: {
+  phrase: {
     type: DataTypes.TEXT,
-    allowNull: false,
-  },
-  imaginary_universe: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  age: {
-    type: DataTypes.INTEGER,
     allowNull: false,
   },
 });
 
-Character.sync();
+Phrase.sync({ force: true });
 
-module.exports = Character;
+module.exports = Phrase;

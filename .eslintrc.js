@@ -9,11 +9,12 @@ module.exports = {
   parserOptions: {
     ecmaVersion: 'latest',
   },
-  plugins: ['jest'],
   rules: {
     'no-console': 'off',
     'class-methods-use-this': 'off',
     camelcase: 'off',
     'object-curly-newline': 'off',
+    'consistent-return': 'off',
+    
   },
 };

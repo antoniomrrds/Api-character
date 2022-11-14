@@ -15,4 +15,8 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(router);
 
+app.use(function(req, res, next) {
+  res.status(404).json({message: 'Erro ao acessar a rota'});
+});
+
 module.exports = app;
