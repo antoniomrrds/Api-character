@@ -15,6 +15,6 @@ module.exports = {
     camelcase: 'off',
     'object-curly-newline': 'off',
     'consistent-return': 'off',
-    
+    'no-unused-vars': 'off',
   },
 };

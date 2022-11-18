@@ -2,6 +2,8 @@ const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv');
 const router = require('./routes/routes');
+const error404 = require('./middlewares/Error404');
+const ErrorHandler = require('./middlewares/HandleError');
 
 dotenv.config();
 
@@ -15,8 +17,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(router);
 
-app.use(function(req, res, next) {
-  res.status(404).json({message: 'Erro ao acessar a rota'});
-});
+app.use(error404);
+app.use(ErrorHandler);
 
 module.exports = app;

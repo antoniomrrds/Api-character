@@ -1,13 +1,13 @@
 const router = require('express').Router();
-const PharseController = require('../controllers/PharseController');
+const PhraseController = require('../controllers/PhraseController');
 const HomeController = require('../controllers/HomeController');
 
 router.get('/', HomeController.index);
 
-router.get('/phrase', PharseController.index);
-router.get('/phrase/:id', PharseController.show);
-router.post('/phrase', PharseController.create);
-router.put('/phrase/:id', PharseController.update);
-router.delete('/phrase/:id', PharseController.delete);
+router.get('/phrase', PhraseController.index);
+router.get('/phrase/:id', PhraseController.show);
+router.post('/phrase', PhraseController.create);
+router.put('/phrase/:id', PhraseController.update);
+router.delete('/phrase/:id', PhraseController.delete);
 
 module.exports = router;

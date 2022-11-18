@@ -7,7 +7,7 @@ const Phrase = connection.define('phrase', {
     autoIncrement: true,
     primaryKey: true,
   },
-  name: {
+  author: {
     type: DataTypes.STRING,
     allowNull: false,
   },
@@ -17,6 +17,6 @@ const Phrase = connection.define('phrase', {
   },
 });
 
-Phrase.sync({ force: true });
+Phrase.sync();
 
 module.exports = Phrase;
