@@ -1,18 +1,14 @@
-const Phrase = require('../models/Phrase');
-const { phraseValidator } = require('../validation/phrase-joi');
-const { validateID } = require('../validation/id-joi');
+const { errorPhrases } = require('../validation/phrase/phrase-joi');
+const { validateID, errorsId } = require('../validation/id/id-joi');
+const PhraseService = require('../services/Phrase.service');
+const errorStatus = require('../utils/errorStatus');
 
 module.exports = {
   async index(req, res, next) {
     try {
-      const phrases = await Phrase.findAll({
-        attributes: ['id', 'phrase', 'author'],
-      });
-
-      if (phrases.length <= 0) {
-        const err = new Error('Frase não encontrada');
-        err.status = 404;
-        return next(err);
+      const phrases = await PhraseService.getAll();
+      if (phrases.length > 0) {
+        return errorStatus('Frase não encontrada', 404, next);
       }
       return res.status(200).json(phrases);
     } catch (e) {
@@ -29,15 +25,11 @@ module.exports = {
         phrase,
       };
 
-      const { error } = phraseValidator(data);
-
-      if (error) {
-        res.status(400).json({ errors: error.details.map((e) => e.message) });
-        return;
+      const error = errorPhrases(data, res);
+      if (error === false) {
+        const newPhrase = await PhraseService.create(data);
+        return res.status(201).json(newPhrase);
       }
-
-      const newPhrase = await Phrase.create(data);
-      res.status(201).json(newPhrase);
     } catch (e) {
       next(e);
     }
@@ -46,21 +38,16 @@ module.exports = {
   async show(req, res, next) {
     try {
       const { id } = req.params;
-      const { error } = validateID(id);
-      if (error) {
-        res.status(400).json({ errors: error.details.map((e) => e.message) });
-        return;
-      }
-      const phrase = await Phrase.findByPk(id);
+      const errorID = errorsId(id, res);
+      if (errorID === false) {
+        const phrase = await PhraseService.findOne(id);
 
-      if (phrase == null) {
-        const err = new Error('Frase não encontrada');
-        err.status = 404;
-        next(err);
-        return;
-      }
+        if (phrase == null) {
+          return errorStatus('Frase não encontrada', 404, next);
+        }
 
-      return res.status(200).json(phrase);
+        return res.status(200).json(phrase);
+      }
     } catch (e) {
       next(e);
     }
@@ -69,40 +56,26 @@ module.exports = {
   async update(req, res, next) {
     try {
       const { id } = req.params;
-      const { error } = validateID(id);
       const { author, phrase } = req.body;
+      const errorID = errorsId(id, res);
+      if (errorID === false) {
+        const phraseID = await PhraseService.findOne(id);
 
-      if (error) {
-        res.status(400).json({ errors: error.details.map((e) => e.message) });
-        return;
+        if (phraseID == null) {
+          return errorStatus('Frase não encontrada', 404, next);
+        }
+
+        const data = {
+          author,
+          phrase,
+        };
+
+        const errorPhrase = errorPhrases(data, res);
+        if (errorPhrase === false) {
+          await PhraseService.update(id, data);
+          return res.status(200).json({ msg: 'Frase atualizada com sucesso !' });
+        }
       }
-
-      const phraseID = await Phrase.findByPk(id);
-
-      if (phraseID == null) {
-        const err = new Error('Frase não encontrada');
-        err.status = 404;
-        next(err);
-        return;
-      }
-
-      const data = {
-        author,
-        phrase,
-      };
-
-      const responseData = phraseValidator(data);
-
-      if (responseData.error) {
-        res.status(400).json({ errors: responseData.error.details.map((e) => e.message) });
-        return;
-      }
-      await Phrase.update(data, {
-        where: {
-          id,
-        },
-      });
-      return res.status(200).json({ msg: 'Frase atualizada com sucesso !' });
     } catch (e) {
       next(e);
     }
@@ -116,7 +89,7 @@ module.exports = {
         res.status(400).json({ errors: error.details.map((e) => e.message) });
         return;
       }
-      const phraseID = await Phrase.findByPk(id);
+      const phraseID = await PhraseService.findOne(id);
       if (phraseID == null) {
         const err = new Error('Frase não encontrada');
         err.status = 404;
@@ -126,6 +99,14 @@ module.exports = {
 
       phraseID.destroy();
       return res.status(200).json({ msg: 'Frase deletada com sucesso' });
+    } catch (e) {
+      next(e);
+    }
+  },
+  async getRandomPhrase(req, res, next) {
+    try {
+      const value = await PhraseService.randomPhrase();
+      return res.json(value);
     } catch (e) {
       next(e);
     }

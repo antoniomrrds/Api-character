@@ -17,4 +17,13 @@ const validateID = (id) => {
   return JoiSchema.validate(id);
 };
 
-module.exports = { validateID };
+const errorsId = (data, res) => {
+  const { error } = validateID(data);
+  if (error) {
+    res.status(400).json({ errors: error.details.map((e) => e.message) });
+    return true;
+  }
+  return false;
+};
+
+module.exports = { errorsId };

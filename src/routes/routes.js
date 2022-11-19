@@ -10,4 +10,6 @@ router.post('/phrase', PhraseController.create);
 router.put('/phrase/:id', PhraseController.update);
 router.delete('/phrase/:id', PhraseController.delete);
 
+router.get('/phraserandom', PhraseController.getRandomPhrase);
+
 module.exports = router;

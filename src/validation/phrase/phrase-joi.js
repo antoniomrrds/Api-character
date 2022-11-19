@@ -21,4 +21,13 @@ const phraseValidator = (phrase) => {
   return JoiSchema.validate(phrase);
 };
 
-module.exports = { phraseValidator };
+const errorPhrases = (data, res) => {
+  const { error } = phraseValidator(data);
+  if (error) {
+    res.status(400).json({ errors: error.details.map((e) => e.message) });
+    return true;
+  }
+  return false;
+};
+
+module.exports = { errorPhrases };
