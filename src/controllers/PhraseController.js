@@ -1,7 +1,7 @@
 const { errorPhrases } = require('../validation/phrase/phrase-joi');
 const { errorsId } = require('../validation/id/id-joi');
 const PhraseService = require('../services/Phrase.service');
-const errorStatus = require('../utils/errorStatus');
+const errorStatus = require('../utils/error/errorStatus');
 
 module.exports = {
   async index(req, res, next) {

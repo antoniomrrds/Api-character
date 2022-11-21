@@ -1,6 +1,6 @@
 const errorStatus = (value, status, next) => {
-  const err = new Error('Frase não encontrada');
-  err.status = 404;
+  const err = new Error(value);
+  err.status = status;
   return next(err);
 };
 

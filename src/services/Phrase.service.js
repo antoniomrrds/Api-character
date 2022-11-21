@@ -1,12 +1,13 @@
 const Phrase = require('../models/Phrase');
+const getRandomIntInclusive = require('../utils/random');
 
 module.exports = {
   async randomPhrase() {
     const phrases = await Phrase.findAll({
       attributes: ['id', 'phrase', 'author'],
     });
-
-    return phrases;
+    const index = getRandomIntInclusive(0, phrases.length - 1);
+    return phrases[index];
   },
   async getAll() {
     const phrases = await Phrase.findAll({
