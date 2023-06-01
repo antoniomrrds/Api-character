@@ -1,14 +1,18 @@
 {
-  "name": "shortener",
+  "name": "phrasesapi",
   "version": "1.0.0",
-  "description": "",
+  "description": "Phrases API",
   "main": "app.js",
   "scripts": {
     "start": "node src/server.js",
-    "dev": "nodemon src/server.js"
+    "dev": "nodemon src/server.js",
+    "lint-eslint": "eslint \"src/**\"",
+    "fix-eslint": "eslint --fix \"src/**\"",
+    "lint-editorconfig": "eclint check --fix .",
+    "fix-editorconfig": "eclint fix ."
   },
   "keywords": [],
-  "author": "",
+  "author": "Antonio Marcos",
   "license": "ISC",
   "dependencies": {
     "cors": "^2.8.5",
@@ -22,6 +26,7 @@
     "swagger-ui-express": "^4.6.0"
   },
   "devDependencies": {
+    "eclint": "^2.8.1",
     "eslint": "^8.26.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-import": "^2.26.0",

@@ -1,7 +1,7 @@
 const { errorPhrases } = require('../validation/phrase/phrase-joi');
 const { errorsId } = require('../validation/id/id-joi');
 const PhraseService = require('../services/Phrase.service');
-const errorStatus = require('../utils/error/errorStatus');
+const errorStatus = require('../error/errorStatus');
 
 module.exports = {
   async index(req, res, next) {
@@ -73,7 +73,7 @@ module.exports = {
         const errorPhrase = errorPhrases(data, res);
         if (errorPhrase === false) {
           await PhraseService.update(id, data);
-          return res.status(200).json({ msg: 'Frase atualizada com sucesso !' });
+          return res.status(200).json({ message: 'Frase atualizada com sucesso !' });
         }
       }
     } catch (e) {
@@ -93,7 +93,7 @@ module.exports = {
         }
 
         phraseID.destroy();
-        return res.status(200).json({ msg: 'Frase deletada com sucesso' });
+        return res.status(200).json({ message: 'Frase deletada com sucesso' });
       }
     } catch (e) {
       next(e);

@@ -15,7 +15,7 @@ const HomeController = require('../controllers/HomeController');
  *       properties:
  *         id:
  *           type: string
- *           description: The auto-generated id of the  phrase
+ *           description: The auto-generated ID of the phrase
  *         phrase:
  *           type: string
  *           description: The phrase
@@ -29,6 +29,7 @@ const HomeController = require('../controllers/HomeController');
  */
 
 router.get('/', HomeController.index);
+
 /**
  * @swagger
  * tags:
@@ -42,11 +43,11 @@ router.get('/phrase', PhraseController.index);
  * @swagger
  * /phrase:
  *   get:
- *     summary: Returns the list of all the phrase
+ *     summary: Returns the list of all phrases
  *     tags: [Phrase]
  *     responses:
  *       200:
- *         description: The list of the phrase
+ *         description: The list of phrases
  *         content:
  *           application/json:
  *             schema:
@@ -54,7 +55,7 @@ router.get('/phrase', PhraseController.index);
  *               items:
  *                 $ref: '#/components/schemas/Phrase'
  *       500:
- *        description: Some error happened
+ *         description: Some error happened
  */
 
 router.get('/phrase/:id', PhraseController.show);
@@ -63,7 +64,7 @@ router.get('/phrase/:id', PhraseController.show);
  * @swagger
  * /phrase/{id}:
  *   get:
- *     summary : Get The Phrase by id
+ *     summary: Get the phrase by ID
  *     tags: [Phrase]
  *     parameters:
  *       - in: path
@@ -71,16 +72,16 @@ router.get('/phrase/:id', PhraseController.show);
  *         schema:
  *           type: number
  *         required: true
- *         description: The phrase id
+ *         description: The ID of the phrase
  *     responses:
  *       200:
- *         description: The Phrase description by id
+ *         description: The phrase description by ID
  *         content:
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/Phrase'
  *       400:
- *         description: Malformed request syntax
+ *         description: Invalid request body or missing required fields
  *       404:
  *         description: The phrase was not found
  *       500:
@@ -93,28 +94,102 @@ router.post('/phrase', PhraseController.create);
  * @swagger
  * /phrase:
  *   post:
- *      summary : Create a new phrase
- *      tags: [Phrase]
- *      requestBody:
- *        required: true
- *        content:
- *          application/json:
- *            schema:
- *              $ref: '#/components/schema/Phrase'
- *      responses:
- *        201:
- *          description: The phrase was successfully created
- *          content:
- *            application/json:
- *              schema:
- *                $ref: '#/components/schemas/Phrase'
- *        500:
+ *     summary: Create a new phrase
+ *     tags: [Phrase]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Phrase'
+ *     responses:
+ *       201:
+ *         description: The phrase was successfully created
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Phrase'
+ *       400:
+ *         description: Invalid request body or missing required fields
+ *       500:
  *         description: Some error happened
  */
 
 router.put('/phrase/:id', PhraseController.update);
+
+/**
+ * @swagger
+ * /phrase/{id}:
+ *   put:
+ *     summary: Update a phrase by ID
+ *     tags: [Phrase]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: number
+ *         required: true
+ *         description: The ID of the phrase
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Phrase'
+ *     responses:
+ *       200:
+ *         description: The phrase was successfully updated
+ *       400:
+ *         description: Malformed request syntax
+ *       404:
+ *         description: Invalid request body or missing required fields
+ *       500:
+ *         description: Some error happened
+ */
+
 router.delete('/phrase/:id', PhraseController.delete);
 
+/**
+ * @swagger
+ * /phrase/{id}:
+ *   delete:
+ *     summary: Delete a phrase by ID
+ *     tags: [Phrase]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: number
+ *         required: true
+ *         description: The ID of the phrase
+ *     responses:
+ *       200:
+ *         description: The phrase was successfully deleted
+ *       400:
+ *         description: Invalid request body or missing required fields
+ *       404:
+ *         description: The phrase was not found
+ *       500:
+ *         description: Some error happened
+ */
+
 router.get('/phraserandom', PhraseController.getRandomPhrase);
+
+/**
+ * @swagger
+ * /phraserandom:
+ *   get:
+ *     summary: Get a random phrase
+ *     tags: [Phrase]
+ *     responses:
+ *       200:
+ *         description: A random phrase
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Phrase'
+ *       500:
+ *         description: Some error happened
+ */
 
 module.exports = router;
